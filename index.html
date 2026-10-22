@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CINEVERSE - Premium Cloud-Powered Movie Ticket Booking Platform. Book IMAX and Dolby Atmos shows with live real-time seat selection and instant e-tickets.">
+  <title>CINEVERSE | Live Movie Ticket Booking</title>
+  
+  <!-- Modern Google Fonts: Outfit & Inter for high-end cinematic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow ambient-glow-top" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-bottom" aria-hidden="true"></div>
+
+  <!-- Global Toast Notification Container -->
+  <div id="toast-container" class="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
+
+  <!-- Top Announcement / Backend Status Ribbon -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="status-indicator">
+        <span class="status-dot live" id="backend-status-dot"></span>
+        <span class="status-label" id="backend-status-text">AWS API Gateway (ap-south-1) Active</span>
+      </div>
+      <div class="top-bar-meta">
+        <span class="meta-item"><span class="badge badge-accent">Live Demo</span></span>
+        <button id="btn-api-inspector-toggle" class="btn-link" type="button" aria-expanded="false" aria-controls="api-inspector-modal">
+          ⚙️ Backend Diagnostics &amp; CORS Info
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="site-header" id="site-header">
+    <div class="container navbar">
+      <a href="#hero" class="brand-logo" aria-label="CINEVERSE Home">
+        <div class="logo-icon-wrap" aria-hidden="true">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+            <line x1="7" y1="2" x2="7" y2="22"></line>
+            <line x1="17" y1="2" x2="17" y2="22"></line>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <line x1="2" y1="7" x2="7" y2="7"></line>
+            <line x1="2" y1="17" x2="7" y2="17"></line>
+            <line x1="17" y1="17" x2="22" y2="17"></line>
+            <line x1="17" y1="7" x2="22" y2="7"></line>
+          </svg>
+        </div>
+        <span class="brand-name">CINE<span class="highlight">VERSE</span></span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="nav-menu" id="nav-menu" aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#movies-section" class="nav-link">Now Showing</a></li>
+          <li><a href="#my-tickets-section" class="nav-link">My Tickets</a></li>
+          <li><a href="#about-section" class="nav-link">Architecture</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#movies-section" class="btn btn-primary btn-sm">
+          <span>Book Tickets</span>
+          <svg class="btn-icon-right" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+        <button id="mobile-menu-btn" class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="hero-backdrop" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <div class="hero-badge-wrap">
+          <span class="pill-badge">
+            <span class="pill-dot"></span> Next-Gen Cinema Experience
+          </span>
+          <span class="pill-badge pill-aws">
+            <svg class="aws-icon" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg> AWS Serverless Powered
+          </span>
+        </div>
+
+        <h1 class="hero-title">
+          Feel Every Frame.<br>
+          <span class="hero-gradient-text">Choose Your Throne.</span>
+        </h1>
+
+        <p class="hero-description">
+          Experience ultra-fast, real-time seat reservation across IMAX, Dolby Atmos, and luxury Recliner screens. Direct AWS Lambda &amp; DynamoDB seat engine integration with zero delays.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#movies-section" class="btn btn-primary btn-lg">
+            <span>Explore Shows &amp; Book Seats</span>
+            <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+          <a href="#my-tickets-section" class="btn btn-secondary btn-lg">
+            <span>Lookup My Bookings</span>
+          </a>
+        </div>
+
+        <!-- Featured Highlights Bar -->
+        <div class="hero-features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-info">
+              <h4>Real-Time Availability</h4>
+              <p>Live seat matrix dynamically queried from AWS DynamoDB</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <div class="feature-info">
+              <h4>Zero Double-Booking</h4>
+              <p>Conditional writes prevent concurrent seat collision (409 Conflict)</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎟️</div>
+            <div class="feature-info">
+              <h4>Instant E-Tickets</h4>
+              <p>Digital passes with live booking IDs &amp; SNS email confirmations</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Movies Section (Live Dynamic Feed from GET /shows) -->
+    <section class="section movies-section" id="movies-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-eyebrow">NOW SHOWING</span>
+            <h2 class="section-title">Available Shows &amp; Screenings</h2>
+          </div>
+          
+          <!-- Filters & Search Toolbar -->
+          <div class="filters-toolbar">
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+              </svg>
+              <input type="text" id="movie-search-input" placeholder="Search movie title or screen..." aria-label="Search movies">
+              <button id="search-clear-btn" class="search-clear hidden" aria-label="Clear search">&times;</button>
+            </div>
+
+            <div class="filter-chips" role="group" aria-label="Filter by format">
+              <button class="filter-chip active" data-filter="all">All Formats</button>
+              <button class="filter-chip" data-filter="IMAX">IMAX</button>
+              <button class="filter-chip" data-filter="Dolby Atmos">Dolby Atmos</button>
+            </div>
+
+            <button id="btn-refresh-shows" class="btn btn-outline btn-icon" title="Refresh available shows from backend" aria-label="Refresh shows">
+              <svg class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M23 4v6h-6"></path>
+                <path d="M1 20v-6h6"></path>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Movies Grid Container -->
+        <div id="movies-container" class="movies-grid" aria-live="polite">
+          <!-- Populated dynamically via script.js -->
+        </div>
+
+        <!-- Movies Loading Skeleton -->
+        <div id="movies-skeleton" class="movies-grid">
+          <div class="movie-card skeleton-card">
+            <div class="skeleton-poster"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-line skeleton-title"></div>
+              <div class="skeleton-line skeleton-sub"></div>
+              <div class="skeleton-line skeleton-btn"></div>
+            </div>
+          </div>
+          <div class="movie-card skeleton-card">
+            <div class="skeleton-poster"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-line skeleton-title"></div>
+              <div class="skeleton-line skeleton-sub"></div>
+              <div class="skeleton-line skeleton-btn"></div>
+            </div>
+          </div>
+          <div class="movie-card skeleton-card">
+            <div class="skeleton-poster"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-line skeleton-title"></div>
+              <div class="skeleton-line skeleton-sub"></div>
+              <div class="skeleton-line skeleton-btn"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty & Error States for Movies -->
+        <div id="movies-error" class="state-card error-card hidden">
+          <div class="state-icon">⚠️</div>
+          <h3 id="movies-error-title">Unable to Fetch Shows</h3>
+          <p id="movies-error-msg">There was an issue communicating with the AWS backend. Please check your network connection or verify API status.</p>
+          <div class="state-actions">
+            <button id="btn-retry-shows" class="btn btn-primary">Try Again</button>
+            <button id="btn-show-cors-guidance" class="btn btn-secondary">CORS Troubleshooting Guide</button>
+          </div>
+        </div>
+
+        <div id="movies-empty" class="state-card empty-card hidden">
+          <div class="state-icon">🎬</div>
+          <h3>No Shows Match Your Criteria</h3>
+          <p>Try resetting your search query or selecting "All Formats".</p>
+          <button id="btn-reset-filters" class="btn btn-secondary">Reset Filters</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- My Tickets Section (GET /tickets?email={EMAIL}) -->
+    <section class="section my-tickets-section" id="my-tickets-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-eyebrow">CUSTOMER PORTAL</span>
+            <h2 class="section-title">My Tickets &amp; Bookings</h2>
+          </div>
+          <p class="section-lead">Enter the email address used during booking to retrieve all confirmed digital tickets.</p>
+        </div>
+
+        <!-- Email Search Form -->
+        <div class="lookup-card">
+          <form id="tickets-lookup-form" class="lookup-form" novalidate>
+            <div class="lookup-input-group">
+              <label for="lookup-email-input" class="sr-only">Your Booking Email Address</label>
+              <div class="input-with-icon">
+                <svg class="field-icon" viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                </svg>
+                <input 
+                  type="email" 
+                  id="lookup-email-input" 
+                  placeholder="Enter your email (e.g., customer@example.com)" 
+                  required
+                  autocomplete="email"
+                >
+              </div>
+              <button type="submit" id="btn-fetch-tickets" class="btn btn-primary">
+                <span class="btn-text">Retrieve Tickets</span>
+                <span class="spinner hidden" id="lookup-spinner"></span>
+              </button>
+            </div>
+            <div id="lookup-validation-error" class="field-error hidden">Please enter a valid email address.</div>
+          </form>
+
+          <!-- Quick Test / Demo Email Chips -->
+          <div class="quick-email-chips">
+            <span class="chips-label">Quick lookup samples:</span>
+            <button type="button" class="email-sample-chip" data-email="customer@example.com">customer@example.com</button>
+            <button type="button" class="email-sample-chip" data-email="tamteabhishek@gmail.com">tamteabhishek@gmail.com</button>
+          </div>
+        </div>
+
+        <!-- Tickets Results Container -->
+        <div id="tickets-container" class="tickets-results-area" aria-live="polite">
+          <div class="state-card placeholder-card" id="tickets-initial-state">
+            <div class="state-icon">🎟️</div>
+            <h3>Looking for your tickets?</h3>
+            <p>Enter your confirmed email address above to view digital tickets, booking IDs, and showtime passes.</p>
+          </div>
+        </div>
+
+        <!-- Tickets Loading Skeleton -->
+        <div id="tickets-skeleton" class="tickets-grid hidden">
+          <div class="ticket-card skeleton-ticket"></div>
+          <div class="ticket-card skeleton-ticket"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture & AWS Overview Section -->
+    <section class="section about-section" id="about-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <span class="section-eyebrow">CLOUD ARCHITECTURE</span>
+            <h2 class="section-title">Engineered with AWS Serverless</h2>
+          </div>
+          <p class="section-lead">A high-concurrency, production-grade cloud backend supporting real-time seat locks and atomic transactions.</p>
+        </div>
+
+        <div class="arch-cards-grid">
+          <div class="arch-card">
+            <div class="arch-badge">API GATEWAY</div>
+            <h3>REST API Router</h3>
+            <p>AWS API Gateway regional endpoint in <code>ap-south-1</code> routes client requests to serverless Lambda microservices.</p>
+            <ul class="arch-features">
+              <li>Rate limiting &amp; validation</li>
+              <li>Low latency Mumbai edge</li>
+              <li>Direct proxy to handlers</li>
+            </ul>
+          </div>
+
+          <div class="arch-card">
+            <div class="arch-badge">AWS LAMBDA</div>
+            <h3>Atomic Reservation Engine</h3>
+            <p>Stateless Python/Node handlers execute seat check and reservation logic within milliseconds.</p>
+            <ul class="arch-features">
+              <li>Single seat booking via <code>/book-ticket</code></li>
+              <li>Batch reservation via <code>/book-group</code></li>
+              <li>Idempotent status updates</li>
+            </ul>
+          </div>
+
+          <div class="arch-card">
+            <div class="arch-badge">AMAZON DYNAMODB</div>
+            <h3>Sub-Millisecond Seat State</h3>
+            <p>NoSQL data store using conditional expression writes to strictly eliminate race conditions &amp; double bookings.</p>
+            <ul class="arch-features">
+              <li>Partition key: Show ID &amp; Seat ID</li>
+              <li>Optimistic concurrency locking</li>
+              <li>HTTP 409 Conflict protection</li>
+            </ul>
+          </div>
+
+          <div class="arch-card">
+            <div class="arch-badge">AMAZON SNS &amp; S3</div>
+            <h3>Notifications &amp; Hosting</h3>
+            <p>Amazon Simple Notification Service delivers email confirmations while Amazon S3 hosts this static SPA with zero servers to manage.</p>
+            <ul class="arch-features">
+              <li>Instant email receipts</li>
+              <li>Global static website hosting</li>
+              <li>99.99% infrastructure uptime</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Seat Selection Modal View -->
+  <div id="seat-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="seat-modal-title">
+    <div class="seat-modal-container">
+      <!-- Modal Header -->
+      <div class="seat-modal-header">
+        <div class="seat-modal-info">
+          <span class="show-screen-pill" id="seat-modal-screen">Screen 1</span>
+          <span class="show-format-pill" id="seat-modal-format">IMAX</span>
+          <h2 id="seat-modal-title" class="seat-modal-title">Avengers: Endgame</h2>
+          <div class="seat-modal-meta">
+            <span id="seat-modal-date">2026-10-13</span> • 
+            <span id="seat-modal-time">6:00 PM</span>
+          </div>
+        </div>
+
+        <div class="seat-modal-header-actions">
+          <button id="btn-refresh-seats" class="btn btn-outline btn-sm" title="Refresh seat availability">
+            <svg class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M23 4v6h-6"></path>
+              <path d="M1 20v-6h6"></path>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span>Refresh Seats</span>
+          </button>
+          <button id="btn-close-seat-modal" class="modal-close-btn" aria-label="Close seat selection">&times;</button>
+        </div>
+      </div>
+
+      <!-- Cinema Screen Visual Indicator -->
+      <div class="cinema-screen-area">
+        <div class="screen-curve-wrapper">
+          <svg class="screen-arc-svg" viewBox="0 0 500 40" preserveAspectRatio="none">
+            <path d="M 10 35 Q 250 5 490 35" fill="none" stroke="url(#screenGrad)" stroke-width="4" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#3a3f55" stop-opacity="0.2"/>
+                <stop offset="50%" stop-color="#E50914" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#3a3f55" stop-opacity="0.2"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="screen-glow"></div>
+        </div>
+        <div class="screen-label">ALL EYES THIS WAY • THE SCREEN</div>
+      </div>
+
+      <!-- Seat Legend & Category Pricing Ribbon -->
+      <div class="seat-legend-bar">
+        <div class="legend-group">
+          <div class="legend-item"><span class="legend-seat seat-sample available"></span> Available</div>
+          <div class="legend-item"><span class="legend-seat seat-sample selected"></span> Selected</div>
+          <div class="legend-item"><span class="legend-seat seat-sample booked"></span> Booked</div>
+        </div>
+        <div class="category-pricing-group" id="seat-pricing-legend">
+          <!-- Populated from show.prices -->
+        </div>
+      </div>
+
+      <!-- Seat Matrix Grid Container -->
+      <div class="seat-viewport">
+        <div id="seat-loader" class="seat-loading-indicator hidden">
+          <div class="spinner-large"></div>
+          <p>Querying real-time seat availability from AWS DynamoDB...</p>
+        </div>
+        
+        <div id="seat-error-msg" class="seat-error-banner hidden">
+          <span>Failed to load seats.</span>
+          <button id="btn-retry-seats" class="btn-link">Retry</button>
+        </div>
+
+        <div id="seats-matrix" class="seats-matrix-layout" role="grid" aria-label="Seat Selection Grid">
+          <!-- Dynamically populated with rows A-G -->
+        </div>
+      </div>
+
+      <!-- Seat Selection Sticky Checkout Footer -->
+      <div class="seat-modal-footer">
+        <div class="selected-summary">
+          <div class="selected-seats-info">
+            <span class="summary-label">Selected Seats (<span id="selected-count">0</span>):</span>
+            <div id="selected-seats-chips" class="selected-chips-wrapper">
+              <span class="no-selection-hint">No seats selected yet. Click any available seat above.</span>
+            </div>
+          </div>
+          <div class="selected-pricing-info">
+            <div class="price-subtext">Total Price:</div>
+            <div class="price-amount" id="selected-total-price">₹0</div>
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button id="btn-clear-selection" class="btn btn-secondary btn-sm" disabled>Clear All</button>
+          <button id="btn-proceed-checkout" class="btn btn-primary btn-md" disabled>
+            <span>Proceed to Checkout</span>
+            <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Information Drawer / Modal -->
+  <div id="checkout-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
+    <div class="modal-card checkout-modal-card">
+      <div class="modal-card-header">
+        <h3 id="checkout-modal-title" class="modal-card-title">Complete Your Booking</h3>
+        <button id="btn-close-checkout" class="modal-close-btn" aria-label="Cancel checkout">&times;</button>
+      </div>
+
+      <div class="modal-card-body">
+        <!-- Order Summary Section -->
+        <div class="checkout-summary-box">
+          <div class="checkout-movie-title" id="checkout-movie-name">Avengers: Endgame</div>
+          <div class="checkout-meta-line" id="checkout-movie-meta">Screen 1 • IMAX • 2026-10-13 at 6:00 PM</div>
+          
+          <div class="checkout-seats-table-wrapper">
+            <table class="checkout-seats-table">
+              <thead>
+                <tr>
+                  <th>Seat</th>
+                  <th>Tier</th>
+                  <th class="text-right">Price</th>
+                </tr>
+              </thead>
+              <tbody id="checkout-seats-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="2" class="total-label">Final Amount:</td>
+                  <td class="total-value text-right" id="checkout-final-total">₹0</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="checkout-note">
+            🛡️ Pricing is calculated directly by the AWS backend. Zero hidden fees.
+          </div>
+        </div>
+
+        <!-- Customer Details Form -->
+        <form id="checkout-form" class="checkout-form" novalidate>
+          <div class="form-group">
+            <label for="cust-name-input">Full Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="cust-name-input" 
+              class="form-control" 
+              placeholder="e.g. John Doe" 
+              required 
+              minlength="2"
+              autocomplete="name"
+            >
+            <span class="field-error hidden" id="cust-name-error">Please enter your name.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="cust-email-input">Email Address <span class="required">*</span></label>
+            <input 
+              type="email" 
+              id="cust-email-input" 
+              class="form-control" 
+              placeholder="e.g. customer@example.com" 
+              required 
+              autocomplete="email"
+            >
+            <span class="field-error hidden" id="cust-email-error">Please provide a valid email for ticket delivery.</span>
+            <small class="field-help">Your ticket confirmation and SNS notification will be linked to this email.</small>
+          </div>
+
+          <div id="checkout-conflict-banner" class="alert-banner alert-warning hidden">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-text" id="checkout-conflict-msg">One or more seats were just booked by another guest. Please choose alternative seats.</div>
+          </div>
+
+          <div id="checkout-api-error" class="alert-banner alert-danger hidden">
+            <div class="alert-icon">❌</div>
+            <div class="alert-text" id="checkout-error-msg">Booking request failed. Please check network and try again.</div>
+          </div>
+
+          <div class="checkout-form-actions">
+            <button type="button" id="btn-back-to-seats" class="btn btn-secondary">
+              ← Back to Seat Selection
+            </button>
+            <button type="submit" id="btn-confirm-booking" class="btn btn-primary btn-book-submit">
+              <span class="btn-text" id="btn-confirm-booking-text">Confirm &amp; Pay ₹0</span>
+              <span class="spinner hidden" id="booking-spinner"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Confirmation Digital Ticket Modal -->
+  <div id="confirmation-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+    <div class="modal-card confirmation-card">
+      <div class="confirmation-success-banner">
+        <div class="success-icon-bubble">✓</div>
+        <h3 id="confirm-modal-title">Booking Confirmed!</h3>
+        <p class="success-subtext">Your seats have been securely reserved in AWS DynamoDB.</p>
+      </div>
+
+      <!-- Cinematic Digital Ticket Pass -->
+      <div class="digital-ticket" id="printable-ticket">
+        <div class="ticket-top">
+          <div class="ticket-brand">
+            <span class="ticket-logo-text">CINEVERSE PASS</span>
+            <span class="ticket-badge-format" id="ticket-format">IMAX</span>
+          </div>
+          <div class="ticket-booking-id">
+            <span class="label">BOOKING ID:</span>
+            <span class="mono-code" id="ticket-booking-id">--</span>
+          </div>
+        </div>
+
+        <div class="ticket-body">
+          <h2 class="ticket-movie-title" id="ticket-movie-title">Avengers: Endgame</h2>
+          
+          <div class="ticket-details-grid">
+            <div class="ticket-detail">
+              <span class="ticket-detail-label">DATE</span>
+              <span class="ticket-detail-val" id="ticket-date">--</span>
+            </div>
+            <div class="ticket-detail">
+              <span class="ticket-detail-label">TIME</span>
+              <span class="ticket-detail-val" id="ticket-time">--</span>
+            </div>
+            <div class="ticket-detail">
+              <span class="ticket-detail-label">SCREEN</span>
+              <span class="ticket-detail-val" id="ticket-screen">Screen 1</span>
+            </div>
+            <div class="ticket-detail">
+              <span class="ticket-detail-label">SEATS</span>
+              <span class="ticket-detail-val highlight-seats" id="ticket-seats">--</span>
+            </div>
+            <div class="ticket-detail">
+              <span class="ticket-detail-label">GUEST</span>
+              <span class="ticket-detail-val" id="ticket-customer">--</span>
+            </div>
+            <div class="ticket-detail">
+              <span class="ticket-detail-label">TOTAL PAID</span>
+              <span class="ticket-detail-val" id="ticket-total-price">₹--</span>
+            </div>
+          </div>
+
+          <!-- Email notification status banner -->
+          <div class="ticket-notification-status" id="ticket-sns-status">
+            <span class="sns-dot" id="ticket-sns-dot"></span>
+            <span id="ticket-sns-msg">SNS email notification sent to customer@example.com</span>
+          </div>
+        </div>
+
+        <!-- Ticket Tear Off / Barcode Section -->
+        <div class="ticket-stub-divider">
+          <div class="tear-hole tear-left"></div>
+          <div class="dashed-line"></div>
+          <div class="tear-hole tear-right"></div>
+        </div>
+
+        <div class="ticket-barcode-area">
+          <div class="barcode-graphic" aria-hidden="true">
+            <div class="barcode-bars"></div>
+          </div>
+          <div class="barcode-number" id="ticket-barcode-num">CINE-2026-AWS-TICKET</div>
+        </div>
+      </div>
+
+      <div class="confirmation-actions">
+        <button id="btn-print-ticket" class="btn btn-secondary">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd"/>
+          </svg>
+          <span>Print / Save Ticket</span>
+        </button>
+        <button id="btn-view-in-mytickets" class="btn btn-outline">
+          <span>View in My Tickets</span>
+        </button>
+        <button id="btn-close-confirm" class="btn btn-primary">
+          <span>Book Another Show</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cancellation Confirmation Dialog Modal -->
+  <div id="cancel-confirm-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="cancel-dialog-title">
+    <div class="modal-card cancel-modal-card">
+      <div class="modal-card-header">
+        <h3 id="cancel-dialog-title" class="modal-card-title">Cancel Ticket Reservation?</h3>
+        <button id="btn-close-cancel-dialog" class="modal-close-btn" aria-label="Dismiss">&times;</button>
+      </div>
+      <div class="modal-card-body">
+        <p>Are you sure you want to release seat <strong id="cancel-seat-id">A01</strong> for show <strong id="cancel-show-name">Avengers: Endgame</strong>?</p>
+        <div class="alert-banner alert-warning">
+          This will call the AWS endpoint <code>DELETE /ticket</code>, releasing the seat in DynamoDB for other customers immediately.
+        </div>
+        <div class="checkout-form-actions">
+          <button type="button" id="btn-cancel-abort" class="btn btn-secondary">Keep Ticket</button>
+          <button type="button" id="btn-cancel-proceed" class="btn btn-danger">
+            <span class="btn-text">Yes, Cancel Ticket</span>
+            <span class="spinner hidden" id="cancel-spinner"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backend Diagnostics & CORS Inspector Drawer / Modal -->
+  <div id="api-inspector-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="inspector-title">
+    <div class="modal-card inspector-modal-card">
+      <div class="modal-card-header">
+        <h3 id="inspector-title" class="modal-card-title">AWS Backend &amp; CORS Diagnostics</h3>
+        <button id="btn-close-inspector" class="modal-close-btn" aria-label="Close inspector">&times;</button>
+      </div>
+      <div class="modal-card-body">
+        <div class="inspector-info-block">
+          <div class="info-row">
+            <span class="info-label">Active API Base URL:</span>
+            <code class="info-val" id="inspector-api-url">https://jtajs6rkjk.execute-api.ap-south-1.amazonaws.com</code>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Region:</span>
+            <span class="info-val">ap-south-1 (Asia Pacific - Mumbai)</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Current Browser Origin:</span>
+            <code class="info-val" id="inspector-origin">Detecting...</code>
+          </div>
+          <div class="api-switch-row" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="input-custom-api-url" class="form-control" style="flex: 1; min-width: 200px; padding: 6px 10px; font-size: 0.8rem;" placeholder="https://jtajs6rkjk.execute-api.ap-south-1.amazonaws.com">
+            <button type="button" id="btn-apply-api-url" class="btn btn-primary btn-sm">Set URL</button>
+            <button type="button" id="btn-reset-api-url" class="btn btn-secondary btn-sm">Reset AWS Direct</button>
+          </div>
+        </div>
+
+        <h4>Endpoint Health Check</h4>
+        <div class="endpoint-status-list">
+          <div class="endpoint-item" id="ep-shows">
+            <span class="ep-method">GET</span>
+            <span class="ep-path">/shows</span>
+            <span class="ep-badge badge-pending">Testing...</span>
+          </div>
+          <div class="endpoint-item" id="ep-seats">
+            <span class="ep-method">GET</span>
+            <span class="ep-path">/seats?show_id={SHOW_ID}</span>
+            <span class="ep-badge badge-pending">Ready</span>
+          </div>
+          <div class="endpoint-item" id="ep-book-ticket">
+            <span class="ep-method">POST</span>
+            <span class="ep-path">/book-ticket</span>
+            <span class="ep-badge badge-pending">Ready</span>
+          </div>
+          <div class="endpoint-item" id="ep-book-group">
+            <span class="ep-method">POST</span>
+            <span class="ep-path">/book-group</span>
+            <span class="ep-badge badge-pending">Ready</span>
+          </div>
+          <div class="endpoint-item" id="ep-tickets">
+            <span class="ep-method">GET</span>
+            <span class="ep-path">/tickets?email={EMAIL}</span>
+            <span class="ep-badge badge-pending">Ready</span>
+          </div>
+        </div>
+
+        <div class="cors-explainer-box">
+          <h4>💡 CORS Troubleshooting Guide</h4>
+          <p>If your browser shows <code>Failed to fetch</code> due to CORS restrictions, this occurs when API Gateway has not yet returned <code>Access-Control-Allow-Origin: *</code>.</p>
+          <div class="cors-fix-steps">
+            <strong>How to resolve in AWS:</strong>
+            <ol>
+              <li>Open <strong>AWS API Gateway Console</strong> &rarr; Select your API (<code>jtajs6rkjk</code>).</li>
+              <li>Under <strong>Resources</strong>, select your routes (<code>/shows</code>, <code>/seats</code>, etc.) &rarr; Click <strong>Enable CORS</strong>.</li>
+              <li>In your <strong>Lambda function responses</strong>, ensure headers include:
+                <pre><code>headers: {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "OPTIONS,GET,POST,DELETE"
+}</code></pre>
+              </li>
+              <li>Click <strong>Deploy API</strong> to the stage to apply changes live.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="inspector-actions">
+          <button id="btn-inspector-recheck" class="btn btn-primary">Run Connection Test</button>
+          <button id="btn-inspector-close" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="brand-name">CINE<span class="highlight">VERSE</span></span>
+          </div>
+          <p class="footer-tagline">Cinematic elegance meets serverless reliability. Built for ultra-fast movie ticket reservations on AWS.</p>
+          <div class="aws-stack-tags">
+            <span class="aws-tag">AWS API Gateway</span>
+            <span class="aws-tag">AWS Lambda</span>
+            <span class="aws-tag">Amazon DynamoDB</span>
+            <span class="aws-tag">Amazon SNS</span>
+            <span class="aws-tag">Amazon S3</span>
+          </div>
+        </div>
+
+        <div class="footer-nav-group">
+          <h4>Quick Navigation</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#movies-section">Now Showing</a></li>
+            <li><a href="#my-tickets-section">My Tickets</a></li>
+            <li><a href="#about-section">Architecture</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav-group">
+          <h4>Seating Tiers</h4>
+          <ul>
+            <li><span>Silver Tier (Rows A–B)</span></li>
+            <li><span>Gold Tier (Rows C–D)</span></li>
+            <li><span>Platinum Tier (Rows E–F)</span></li>
+            <li><span>Recliner Luxury (Row G)</span></li>
+          </ul>
+        </div>
+
+        <div class="footer-nav-group">
+          <h4>Security &amp; Compliance</h4>
+          <p class="footer-security-note">
+            Zero client-side secrets. All bookings authenticated and validated server-side by AWS API Gateway and Lambda functions.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 CINEVERSE Ticketing Platform. Deployed in AWS Region <code>ap-south-1</code> (Mumbai).</p>
+        <p class="demo-disclaimer">Production-ready static frontend for Amazon S3 hosting. Strictly vanilla HTML, CSS &amp; JavaScript.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
